@@ -20,8 +20,14 @@ type Field = {
   card4: Card;
 }
 
+type Player = {
+  pocket0: Card;
+  pocket1: Card;
+}
+
 type Game = {
   field: Field;
+  player: Player;
 }
 
 // component types
@@ -50,7 +56,7 @@ const Trump: React.FC<TrumpProps & MeshProps> = (props) => {
       <boxGeometry args={[1, 1.4, 0.1]} />
       <meshStandardMaterial color={'white'} />
       <Text
-        position={[-0.3, 0.3, 0.05]}
+        position={[-0.3, 0.5, 0.05]}
         fontSize={0.1}
         color={'#000'}
       >
@@ -58,7 +64,7 @@ const Trump: React.FC<TrumpProps & MeshProps> = (props) => {
       </Text>
       <Text
         position={[0, 0, 0.05]}
-        fontSize={0.2}
+        fontSize={0.6}
         color={'#000'}
       >
         {props.card.number}
@@ -74,6 +80,13 @@ const Field: React.FC<{ field: Field } & GroupProps> = (props) => {
     <Trump position={[0, 0, 0]} card={props.field.card2} />
     <Trump position={[1.2, 0, 0]} card={props.field.card3} />
     <Trump position={[2.4, 0, 0]} card={props.field.card4} />
+  </group>
+}
+
+const PlayerHand: React.FC<{ player: Player } & GroupProps> = (props) => {
+  return <group {...props}>
+    <Trump position={[-0.4, 0, 0]} card={props.player.pocket0} />
+    <Trump position={[0.4, 0, 0]} card={props.player.pocket1} />
   </group>
 }
 
@@ -121,16 +134,21 @@ const Home: NextPage = () => {
       card2: {number: 5, suit: "Spade"},
       card3: {number: 5, suit: "Spade"},
       card4: {number: 5, suit: "Spade"},
+    },
+    player: {
+      pocket0: {number: 1, suit: "Spade"},
+      pocket1: {number: 13, suit: "Spade"},
     }
   }
 
   return <div style={{ width: '99vw', height: '66vw' }}>
-    <Canvas flat linear>
+    <Canvas flat>
       <OrthographicCamera makeDefault position={[0, 0, 0]} left={L} right={R} top={T} bottom={B} near={0.1} far={1000} >
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <Rig />
         <Field field={game.field} position={[0, 0, -2]} scale={0.5}/>
+        <PlayerHand player={game.player} position={[0, -1.5, -2]} scale={0.5}/>
       </OrthographicCamera>
     </Canvas>
   </div>
