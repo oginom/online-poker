@@ -21,13 +21,14 @@ type Field = {
 }
 
 type Player = {
+  name: string;
   pocket0: Card;
   pocket1: Card;
 }
 
 type Game = {
   field: Field;
-  player: Player;
+  players: Player[];
 }
 
 // component types
@@ -87,6 +88,7 @@ const PlayerHand: React.FC<{ player: Player } & GroupProps> = (props) => {
   return <group {...props}>
     <Trump position={[-0.4, 0, 0]} card={props.player.pocket0} />
     <Trump position={[0.4, 0, 0]} card={props.player.pocket1} />
+    <Text position={[0, -1.0, 0.1]} fontSize={0.3} color={'#000'}>{props.player.name}</Text>
   </group>
 }
 
@@ -130,15 +132,33 @@ const Home: NextPage = () => {
   const game: Game = {
     field: {
       card0: {number: 5, suit: "Spade"},
-      card1: {number: 5, suit: "Spade"},
-      card2: {number: 5, suit: "Spade"},
-      card3: {number: 5, suit: "Spade"},
-      card4: {number: 5, suit: "Spade"},
+      card1: {number: 6, suit: "Spade"},
+      card2: {number: 7, suit: "Spade"},
+      card3: {number: 8, suit: "Spade"},
+      card4: {number: 9, suit: "Spade"},
     },
-    player: {
-      pocket0: {number: 1, suit: "Spade"},
-      pocket1: {number: 13, suit: "Spade"},
-    }
+    players: [
+      {
+        name: "player1",
+        pocket0: {number: 1, suit: "Spade"},
+        pocket1: {number: 13, suit: "Spade"},
+      },
+      {
+        name: "player2",
+        pocket0: {number: 2, suit: "Spade"},
+        pocket1: {number: 13, suit: "Spade"},
+      },
+      {
+        name: "player3",
+        pocket0: {number: 3, suit: "Spade"},
+        pocket1: {number: 13, suit: "Spade"},
+      },
+      {
+        name: "player4",
+        pocket0: {number: 4, suit: "Spade"},
+        pocket1: {number: 13, suit: "Spade"},
+      },
+    ]
   }
 
   return <div style={{ width: '99vw', height: '66vw' }}>
@@ -148,7 +168,10 @@ const Home: NextPage = () => {
         <pointLight position={[10, 10, 10]} />
         <Rig />
         <Field field={game.field} position={[0, 0, -2]} scale={0.5}/>
-        <PlayerHand player={game.player} position={[0, -1.5, -2]} scale={0.5}/>
+        <PlayerHand player={game.players[0]} position={[0, -1.3, -2]} scale={0.5}/>
+        <PlayerHand player={game.players[1]} position={[-2.5,0, -2]} scale={0.5}/>
+        <PlayerHand player={game.players[2]} position={[0, 1.3, -2]} scale={0.5}/>
+        <PlayerHand player={game.players[3]} position={[2.5, 0, -2]} scale={0.5}/>
       </OrthographicCamera>
     </Canvas>
   </div>
